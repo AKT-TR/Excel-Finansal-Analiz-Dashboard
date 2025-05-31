@@ -1,0 +1,54 @@
+Sub DosyaYukle_BasliklarGelsin()
+    Dim fd As FileDialog
+    Dim secilenDosya As String
+    Dim kaynakWb As Workbook
+    Dim kaynakSayfa As Worksheet
+    Dim hedefSayfa As Worksheet
+    Dim kaynakVeri As Range
+    Dim sonSatir As Long, sonSutun As Long
+
+    ' Dosya seçimi
+    Set fd = Application.FileDialog(msoFileDialogFilePicker)
+    fd.Title = "Bir Excel dosyası seçin"
+    fd.Filters.Clear
+    fd.Filters.Add "Excel Dosyaları", "*.xlsx"
+
+    If fd.Show <> -1 Then Exit Sub
+    secilenDosya = fd.SelectedItems(1)
+
+    ' Dosyayı aç
+    Set kaynakWb = Workbooks.Open(secilenDosya, ReadOnly:=True)
+    Set kaynakSayfa = kaynakWb.Sheets(1)
+
+    ' Son satır ve sütunu bul
+    With kaynakSayfa
+        sonSatir = .Cells(.Rows.Count, 1).End(xlUp).Row
+        sonSutun = .Cells(1, .Columns.Count).End(xlToLeft).Column
+    End With
+
+    ' Veriyi al (başlıklar dahil!)
+    Set kaynakVeri = kaynakSayfa.Range(kaynakSayfa.Cells(1, 1), kaynakSayfa.Cells(sonSatir, sonSutun))
+
+    ' Hedef sayfa ve temizleme
+    Set hedefSayfa = ThisWorkbook.Sheets("veri")
+    hedefSayfa.Cells.ClearContents
+
+    ' Yapıştır
+    hedefSayfa.Range("A1").Resize(kaynakVeri.Rows.Count, kaynakVeri.Columns.Count).Value = kaynakVeri.Value
+
+    ' Tabloyu yeniden oluştur
+    Dim tbl As ListObject
+    On Error Resume Next
+    For Each tbl In hedefSayfa.ListObjects
+        tbl.Delete
+    Next
+    On Error GoTo 0
+
+    Set tbl = hedefSayfa.ListObjects.Add(xlSrcRange, hedefSayfa.Range("A1").CurrentRegion, , xlYes)
+    tbl.Name = "FinansalTablo"
+
+    kaynakWb.Close False
+    MsgBox "Veri ve başlıklar tabloya başarıyla yüklendi.", vbInformation
+End Sub
+
+

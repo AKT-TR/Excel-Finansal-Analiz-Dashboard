@@ -1,0 +1,21 @@
+Sub TablodakiVerileriSil_YapiKalsin()
+    Dim ws As Worksheet
+    Dim tbl As ListObject
+
+    Set ws = ThisWorkbook.Sheets("veri")
+
+    If ws.ListObjects.Count = 0 Then
+        MsgBox "'veri' sayfasında tablo bulunamadı.", vbExclamation
+        Exit Sub
+    End If
+
+    Set tbl = ws.ListObjects(1) ' İlk tabloyu seçiyoruz
+
+    If tbl.DataBodyRange Is Nothing Then
+        MsgBox "Tabloda silinecek veri yok.", vbInformation
+    Else
+        tbl.DataBodyRange.ClearContents ' Sadece veri temizlenir, tablo silinmez
+        MsgBox "Veriler temizlendi. Tablo yapısı korunuyor.", vbInformation
+    End If
+End Sub
+

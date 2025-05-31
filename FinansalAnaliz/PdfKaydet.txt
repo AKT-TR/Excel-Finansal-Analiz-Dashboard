@@ -1,0 +1,37 @@
+Sub PdfKaydet_AnalizSayfasi()
+    Dim ws As Worksheet
+    Dim dosyaYolu As Variant
+
+    ' Hedef sayfa
+    Set ws = ThisWorkbook.Sheets("analiz")
+
+    ' Kullanıcıdan kayıt yeri ve isim al
+    dosyaYolu = Application.GetSaveAsFilename( _
+        InitialFileName:="Finansal_Analiz.pdf", _
+        FileFilter:="PDF Dosyaları (*.pdf), *.pdf", _
+        Title:="PDF olarak kaydet")
+
+    ' Kullanıcı iptal ettiyse çık
+    If dosyaYolu = False Then Exit Sub
+
+    ' Sayfa biçimini yatay yap
+    With ws.PageSetup
+        .Orientation = xlLandscape
+        .Zoom = False
+        .FitToPagesWide = 1
+        .FitToPagesTall = False
+    End With
+
+    ' PDF olarak dışa aktar
+    ws.ExportAsFixedFormat _
+        Type:=xlTypePDF, _
+        Filename:=dosyaYolu, _
+        Quality:=xlQualityStandard, _
+        IncludeDocProperties:=True, _
+        IgnorePrintAreas:=False, _
+        OpenAfterPublish:=True
+
+    MsgBox "PDF başarıyla kaydedildi!", vbInformation
+End Sub
+
+
