@@ -55,7 +55,4 @@ GitHub: [github.com/AKT-TR](https://github.com/AKT-TR)
 
 ---
 
-## 📬 Lisans
-
-Bu proje açık kaynak olup dilediğiniz gibi kullanabilirsiniz. Lisans dosyası dahil değildir.
 
