@@ -51,7 +51,7 @@ Ayrıca finansal şirketlerin mali tabloları farklı yapıya sahip olduğu içi
 ## 👨‍💻 Geliştirici
 
 Akif
-GitHub: [github.com/AKT-TR](https://github.com/AKT-TR)
+GitHub:https://github.com/AkifTncr
 
 ---
 
